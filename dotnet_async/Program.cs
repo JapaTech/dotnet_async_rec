@@ -1,8 +1,8 @@
-﻿void LerArquivo()
+﻿Task<string> conteudoTask = Task.Run(() => File.ReadAllText("voos.txt"));
+void LerArquivo()
 {
-    var conteudo = File.ReadAllText("voos.txt");
     Task.Delay(new Random().Next(300, 8000));
-    Console.WriteLine($"Conteúdo: \n{conteudo}");
+    Console.WriteLine($"Conteúdo: \n{conteudoTask.Result}");
 }
 
 void ExibirRelatorio()
@@ -11,9 +11,9 @@ void ExibirRelatorio()
     Task.Delay(new Random().Next(300, 8000));
 }
 
-var task1 = Task.Run(()=> LerArquivo());
+Task task1 = Task.Run(()=> LerArquivo());
 
-var task2 = Task.Run(() => ExibirRelatorio());
+Task task2 = Task.Run(() => ExibirRelatorio());
 
 Console.WriteLine("Outras operações.");
 Console.ReadKey();
