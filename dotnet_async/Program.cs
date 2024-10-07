@@ -3,6 +3,9 @@
     var conteudo = File.ReadAllText("voos.txt");
     Console.WriteLine($"Conteúdo: \n{conteudo}");
 }
-LerArquivo();
+
+var thread = new Thread(()=> LerArquivo());
+thread.Start();
+
 Console.WriteLine("Outras operações.");
 Console.ReadKey();
