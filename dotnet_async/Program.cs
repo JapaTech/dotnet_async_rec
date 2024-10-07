@@ -1,9 +1,9 @@
-﻿Task<string> conteudoTask = Task.Run(() => File.ReadAllText(".voos.txt"));
-void LerArquivo()
+﻿Task<string> conteudoTask = Task.Run(() => File.ReadAllTextAsync("voos.txt"));
+async void LerArquivoAsync()
 {
 	try
 	{
-        Task.Delay(new Random().Next(300, 8000));
+        await Task.Delay(new Random().Next(300, 8000));
         Console.WriteLine($"Conteúdo: \n{conteudoTask.Result}");
     }
 	catch (AggregateException ex)
@@ -13,15 +13,18 @@ void LerArquivo()
     
 }
 
-void ExibirRelatorio()
+async void ExibirRelatorioAsync()
 {
     Console.WriteLine("Executando relatório de compra de passagens!");
-    Task.Delay(new Random().Next(300, 8000));
+    await Task.Delay(new Random().Next(300, 8000));
 }
 
-Task task1 = Task.Run(()=> LerArquivo());
+//Task task1 = Task.Run(()=> LerArquivo());
 
-Task task2 = Task.Run(() => ExibirRelatorio());
+//Task task2 = Task.Run(() => ExibirRelatorio());
+
+LerArquivoAsync();
+ExibirRelatorioAsync();
 
 Console.WriteLine("Outras operações.");
 Console.ReadKey();
