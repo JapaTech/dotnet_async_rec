@@ -1,4 +1,10 @@
-﻿Task<string> conteudoTask = Task.Run(() => File.ReadAllTextAsync("voos.txt"));
+﻿object chave = new object();
+Task<string> conteudoTask;
+lock(chave)
+{
+    conteudoTask = Task.Run(() => File.ReadAllTextAsync("voos.txt"));
+}
+
 async Task LerArquivoAsync(CancellationToken token)
 {
     try
