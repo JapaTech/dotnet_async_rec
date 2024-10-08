@@ -1,5 +1,5 @@
 ﻿Task<string> conteudoTask = Task.Run(() => File.ReadAllTextAsync("voos.txt"));
-async void LerArquivoAsync()
+async Task LerArquivoAsync()
 {
 	try
 	{
@@ -13,18 +13,13 @@ async void LerArquivoAsync()
     
 }
 
-async void ExibirRelatorioAsync()
+async Task ExibirRelatorioAsync()
 {
     Console.WriteLine("Executando relatório de compra de passagens!");
     await Task.Delay(new Random().Next(300, 8000));
 }
 
-//Task task1 = Task.Run(()=> LerArquivo());
-
-//Task task2 = Task.Run(() => ExibirRelatorio());
-
-LerArquivoAsync();
-ExibirRelatorioAsync();
+await Task.WhenAll(LerArquivoAsync(), ExibirRelatorioAsync());
 
 Console.WriteLine("Outras operações.");
 Console.ReadKey();
