@@ -4,7 +4,6 @@ lock(chave)
 {
     conteudoTask = Task.Run(() => File.ReadAllTextAsync("voos.txt"));
 }
-
 async Task LerArquivoAsync(CancellationToken token)
 {
     try
