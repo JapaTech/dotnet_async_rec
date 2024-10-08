@@ -1,25 +1,45 @@
 ﻿Task<string> conteudoTask = Task.Run(() => File.ReadAllTextAsync("voos.txt"));
-async Task LerArquivoAsync()
+async Task LerArquivoAsync(CancellationToken token)
 {
-	try
-	{
+    try
+    {
         await Task.Delay(new Random().Next(300, 8000));
+        token.ThrowIfCancellationRequested();
         Console.WriteLine($"Conteúdo: \n{conteudoTask.Result}");
+        
     }
-	catch (AggregateException ex)
-	{
+    catch (OperationCanceledException ex)
+    {
+       Console.WriteLine($"Tarefa cancelada: {ex.Message}");
+    }
+    catch (AggregateException ex)
+    {
         Console.WriteLine($"Aconteceu o erro: {ex.InnerException.Message}");
     }
     
 }
 
-async Task ExibirRelatorioAsync()
+async Task ExibirRelatorioAsync(CancellationToken token)
 {
-    Console.WriteLine("Executando relatório de compra de passagens!");
-    await Task.Delay(new Random().Next(300, 8000));
+	try
+	{
+        Console.WriteLine("Executando relatório de compra de passagens!");
+        await Task.Delay(new Random().Next(300, 8000));
+        token.ThrowIfCancellationRequested();
+    }
+	catch(OperationCanceledException ex)
+	{
+
+        Console.WriteLine($"Tarefa cancelada: {ex.Message}");
+	}
+    
 }
 
-await Task.WhenAll(LerArquivoAsync(), ExibirRelatorioAsync());
+CancellationTokenSource tokenDeCancelamento = new CancellationTokenSource();
+
+Task tarefa= Task.WhenAll(LerArquivoAsync(tokenDeCancelamento.Token), ExibirRelatorioAsync(tokenDeCancelamento.Token));
+
+await Task.Delay(1000).ContinueWith(_ => tokenDeCancelamento.Cancel());
 
 Console.WriteLine("Outras operações.");
 Console.ReadKey();
