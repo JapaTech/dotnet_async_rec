@@ -2,6 +2,7 @@ using dotnet_async_api.Context;
 using dotnet_async_api.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +41,18 @@ app.MapGet("/Hello", async () => {
     
     }).WithTags("Voos").WithSummary("Verificação do status 'Online'").WithOpenApi();
 
-app.MapGet("/voos", async ([FromServices]JornadaMilhasContext context) => { 
-    return await context.Voos.ToListAsync();
+app.MapGet("/voos", async ([FromServices]JornadaMilhasContext context, CancellationToken token = default) => {
+    try
+    {
+        token.ThrowIfCancellationRequested();
+        var voos = await context.Voos.ToListAsync(token);
+        return Results.Ok(voos);
+    }
+    catch (OperationCanceledException ex)
+    {
+
+        return Results.Problem($"Operação cancelada: {ex.Message}");
+    }   
 
 }).WithTags("Voos").WithSummary("Lista os vôos cadastrados.").WithOpenApi();
 
