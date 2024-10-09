@@ -15,13 +15,13 @@ public class JornadaMilhasClient
         this.client = client;
     }
 
-    public async Task<IEnumerable<Voo>> ConsultarVoos()
+    public async Task<IEnumerable<Voo>> ConsultarVoosAsync()
     {
         HttpResponseMessage response = await client.GetAsync("/Voos");
         return await response.Content.ReadFromJsonAsync<IEnumerable<Voo>>();
     }
 
-    public async Task<string> ComprarPassagem( CompraPassagemRequest request)
+    public async Task<string> ComprarPassagemAsync( CompraPassagemRequest request)
     {
         return await client.PostAsJsonAsync("/Voos/comprar", request).Result.Content.ReadFromJsonAsync<string>();
 

@@ -58,7 +58,7 @@ var client = new JornadaMilhasClient(new JornadaMilhasClientFactory().CreateClie
 
 async Task ProcessarConsultasDeVoosAsync()
 {
-    var voos = await client.ConsultarVoos();
+    var voos = await client.ConsultarVoosAsync();
 
     foreach (var voo in voos)
     {
@@ -72,7 +72,7 @@ async Task ComprarPassagemAsync()
 {
     var compraPassagemRequest = new CompraPassagemRequest() {Origem="Vitória",Destino="Belém",Milhas =1000 };
 
-    var resultado = client.ComprarPassagem(compraPassagemRequest);
+    var resultado = client.ComprarPassagemAsync(compraPassagemRequest);
 
     Console.WriteLine(resultado.Result);
 }
