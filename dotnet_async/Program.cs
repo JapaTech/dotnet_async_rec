@@ -52,6 +52,7 @@
 #endregion
 
 using dotnet_async.Client;
+using dotnet_async.Modelos;
 
 var client = new JornadaMilhasClient(new JornadaMilhasClientFactory().CreateClient());
 
@@ -66,3 +67,14 @@ async Task ProcessarConsultasDeVoosAsync()
 }
 
 await ProcessarConsultasDeVoosAsync();
+
+async Task ComprarPassagemAsync()
+{
+    var compraPassagemRequest = new CompraPassagemRequest() {Origem="Vitória",Destino="Belém",Milhas =1000 };
+
+    var resultado = client.ComprarPassagem(compraPassagemRequest);
+
+    Console.WriteLine(resultado.Result);
+}
+
+await ComprarPassagemAsync();
