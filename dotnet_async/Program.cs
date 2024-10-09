@@ -58,26 +58,12 @@ var client = new JornadaMilhasClient(new JornadaMilhasClientFactory().CreateClie
 
 async Task ProcessarConsultasDeVoosAsync()
 {
-    try
+    var voos = await client.ConsultarVoosAsync();
+
+    foreach (var voo in voos)
     {
-        CancellationTokenSource token = new CancellationTokenSource();
-
-        token.Cancel();
-
-        var voos = await client.ConsultarVoosAsync(token.Token);
-
-
-        foreach (var voo in voos)
-        {
-            Console.WriteLine(voo);
-        }
+        Console.WriteLine(voo);
     }
-    catch (Exception ex)
-    {
-
-        await Console.Out.WriteLineAsync($"Erro: {ex.Message}");
-    }
-    
 }
 
 await ProcessarConsultasDeVoosAsync();
