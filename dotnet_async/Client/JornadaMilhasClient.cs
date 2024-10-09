@@ -15,9 +15,9 @@ public class JornadaMilhasClient
         this.client = client;
     }
 
-    public async Task<IEnumerable<Voo>> ConsultarVoosAsync()
+    public async Task<IEnumerable<Voo>> ConsultarVoosAsync(CancellationToken token=default)
     {
-        HttpResponseMessage response = await client.GetAsync("/Voos");
+        HttpResponseMessage response = await client.GetAsync("/Voos",token);
         return await response.Content.ReadFromJsonAsync<IEnumerable<Voo>>();
     }
 
