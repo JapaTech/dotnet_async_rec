@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="voos.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="voos.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
