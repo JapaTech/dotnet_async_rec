@@ -18,13 +18,13 @@ namespace dotnet_async.Client
             this.client = client;
         }
 
-        public async Task<IEnumerable<Voo>> ConsultarVoo()
+        public async Task<IEnumerable<Voo>> ConsultarVooAsync()
         {
             HttpResponseMessage response = await client.GetAsync("/Voos");
             return await response.Content.ReadFromJsonAsync<IEnumerable<Voo>>();
         }
 
-        public async Task<string> ComprarPassagem(CompraPassagemRequest request)
+        public async Task<string> ComprarPassagemAsync(CompraPassagemRequest request)
         {
             return await client.PostAsJsonAsync("/Voos/comprar", request)
                 .Result.Content.ReadFromJsonAsync<string>();

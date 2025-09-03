@@ -1,5 +1,6 @@
 using dotnet_async_api.Context;
 using dotnet_async_api.Modelos;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,14 +35,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/Hello", () => "Hello World! - API online.").WithTags("Voos").WithSummary("Verificação do status 'Online'").WithOpenApi();
+app.MapGet("/Hello", async () => { await Task.FromResult("Hello World! - API online."); 
+}).WithTags("Voos").WithSummary("Verificação do status 'Online'").WithOpenApi();
 
 app.MapGet("/voos", async ([FromServices]JornadaMilhasContext context) => { 
-
-    Task.Delay(5000).Wait();
     return await context.Voos.ToListAsync();
 
 }).WithTags("Voos").WithSummary("Lista os vôos cadastrados.").WithOpenApi();
+
+app.MapGet("/voos/{id}", async ([FromServices] JornadaMilhasContext context, int id) =>
+{
+    var voo = await context.Voos.FindAsync(id);
+
+    if (voo == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(voo);
+});
 
 app.MapPost("/voos/comprar",async([FromServices]JornadaMilhasContext context, [FromBody] CompraPassagemRequest request) =>
 {
