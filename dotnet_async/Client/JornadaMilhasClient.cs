@@ -18,9 +18,9 @@ namespace dotnet_async.Client
             this.client = client;
         }
 
-        public async Task<IEnumerable<Voo>> ConsultarVoo()
+        public async Task<IEnumerable<Voo>> ConsultarVoo(CancellationToken token = default)
         {
-            HttpResponseMessage response = await client.GetAsync("/Voos");
+            HttpResponseMessage response = await client.GetAsync("/Voos", token);
             return await response.Content.ReadFromJsonAsync<IEnumerable<Voo>>();
         }
 

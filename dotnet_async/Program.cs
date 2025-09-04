@@ -221,12 +221,24 @@ var client = new JornadaMilhasClient(new JornadaMilhasClientFactory().CreateClie
 
 async Task ProcessarVoosAsync()
 {
-    var voos = await client.ConsultarVoo();
-
-	foreach (Voo item in voos)
+	try
 	{
-        Console.WriteLine(item);
+        CancellationTokenSource token = new CancellationTokenSource();
+
+        token.Cancel();
+
+        var voos = await client.ConsultarVoo(token.Token);
+        foreach (Voo item in voos)
+        {
+            Console.WriteLine(item);
+        }
+    }
+	catch (Exception ex)
+	{
+        Console.WriteLine("Erro ao processar voos: " + ex.InnerException.Message);
 	}
+
+	
 }
 
 async Task ComprarPassagem()
@@ -243,4 +255,5 @@ async Task ComprarPassagem()
 }
 
 await ProcessarVoosAsync();
-await ComprarPassagem();	
+await ComprarPassagem();
+
